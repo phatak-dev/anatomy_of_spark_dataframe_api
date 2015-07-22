@@ -2,18 +2,22 @@ package com.madhukaraphatak.spark.dataframe
 
 import org.apache.spark.SparkContext
 import org.apache.spark.sql.Row
-import org.apache.spark.sql.types.{StructType, StringType, StructField}
+import org.apache.spark.sql.types.{StringType, StructField, StructType}
 
 /**
  * Dataframe Example
  */
-object DataFrameExample {
+object FilterExample {
 
   def main(args: Array[String]) {
 
     val sc = new SparkContext(args(0), "Csv loading example")
     val sqlContext = new org.apache.spark.sql.SQLContext(sc)
     val inMemoryDF = Utils.createDataFrame(sqlContext)
-    inMemoryDF.explain(true)
+    val filteredDF = inMemoryDF.filter("c1 != 0").filter("c2 != 0")
+    filteredDF.explain(true)
   }
+
+
+
 }
