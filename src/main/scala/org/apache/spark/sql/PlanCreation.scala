@@ -46,7 +46,11 @@ object PlanCreation {
     //create queryExecution which holds all the different plan
     val queryExecutor = sqlContext.executePlan(logicalRDD)
     queryExecutor.assertAnalyzed()
-   //print physical plan
+
+    // print optimized Plan - Logical Plan
+    println(queryExecutor.optimizedPlan)
+
+   //print physical plan - SparkPlan
     println(queryExecutor.executedPlan)
 
   }
