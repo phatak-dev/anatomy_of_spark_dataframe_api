@@ -1,5 +1,6 @@
 package com.madhukaraphatak.spark.dataframe
 
+import org.apache.spark.sql.catalyst.analysis.Analyzer
 import org.apache.spark.sql.types.{StructType, StringType, StructField}
 import org.apache.spark.sql.{SQLContext, Row, DataFrame}
 
@@ -26,6 +27,17 @@ object Utils {
     val inMemoryDF = sqlContext.createDataFrame(inMemoryRDD, schema)
     inMemoryDF
 
+  }
+
+  def getAnalayzer ( sqlContext : SQLContext) : Analyzer = {
+    import scala.reflect.runtime.universe._
+
+    val typeMirror = runtimeMirror(this.getClass.getClassLoader)
+    val instanceMirror = typeMirror.reflect(sqlContext)
+    val members = instanceMirror.symbol.typeSignature.members
+    def fields = members.filter(_.typeSignature <:< typeOf[Analyzer])
+    val symbol  = fields.head
+    instanceMirror.reflectField(symbol.asTerm).get.asInstanceOf[Analyzer]
   }
 
 }
