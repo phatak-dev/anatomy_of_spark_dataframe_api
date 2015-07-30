@@ -14,6 +14,8 @@ object FilterExampleTree {
     val inMemoryDF = Utils.createDataFrame(sqlContext)
     val filteredDF = inMemoryDF.filter("c1 != 0").filter("c2 != 0")
 
+    println(filteredDF.queryExecution.logical.numberedTreeString)
+
     println(filteredDF.queryExecution.analyzed.numberedTreeString)
 
     println(filteredDF.queryExecution.optimizedPlan.numberedTreeString)
